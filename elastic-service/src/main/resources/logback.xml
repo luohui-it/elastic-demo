@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+
+    <property resource="properties/config.properties"/>
+	<!-- ==================== 控制台输出 ===================== -->
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+
+	<!-- ================= 按输出级别分类 =================== -->
+
+	<!--info级别 -->
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.path}/job_info.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.path}/job_info_%d{yyyyMMdd}.%i.log</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>500MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+        <encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <!-- this quadruples logging throughput -->
+            <!--<immediateFlush>false</immediateFlush>-->
+		</encoder>
+	</appender>
+	<!-- error级别 -->
+	<appender name="FILEERROR"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.path}/job_error.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.path}/job_error_%d{yyyyMMdd}.%i.log</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>500MB</maxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+        <encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 外部jar包 日志级别设置 -->
+	<logger level="INFO" name="com.ibatis"/>
+	<logger level="INFO" name="org.springframework"/>
+	<logger level="INFO" name="java.sql"/>
+	<logger level="INFO" name="org.apache"/>
+	<logger level="ERROR" name="com.alibaba.dubbo"/>
+	<logger level="INFO" name="org.I0Itec"/>
+	<logger level="INFO" name="org.dozer"/>
+
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="FILE" />
+		<appender-ref ref="FILEERROR" />
+        <appender-ref ref="stdout"/>
+	</root>
+
+</configuration>
