@@ -1,2 +1,3 @@
-分片数建议根据机器数来定
-几台机分几片
+学习的文档
+http://dangdangdotcom.github.io/elastic-job/elastic-job-lite/00-overview/intro/
+每一次定时任务执行完 才能触发下次任务的执行
